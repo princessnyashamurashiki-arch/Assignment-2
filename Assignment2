@@ -1,0 +1,456 @@
+QUESTION 1#
+#1.	Write a Python program that connects to a SQLite database,
+ #creates a table,
+ #inserts some data,
+ #and retrieves the data from the table.
+
+ #ANSWER:
+ #import sqlite3
+
+# Connect to SQLite database (creates it if it doesn't exist)
+connection = sqlite3.connect("school.db")
+
+# Create a cursor
+cursor = connection.cursor()
+
+# Create a table
+cursor.execute("""
+  #  CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        age INTEGER,
+        course TEXT
+    )
+""")
+
+# Insert some data
+students = [
+   # (1, "Alice", 20, "Computer Science"),
+    #(2, "Bob", 22, "Information Technology"),
+    #(3, "Charlie", 21, "Software Engineering")
+]
+
+#cursor.executemany("""
+    INSERT OR IGNORE INTO students (id, name, age, course)
+    VALUES (?, ?, ?, ?)
+""", students)
+
+# Save the changes
+connection.commit()
+
+# Retrieve data from the table
+cursor.execute("SELECT * FROM students")
+
+# Display the retrieved data
+print("Students:")
+for student in cursor.fetchall():
+    print(student)
+
+# Close the database connection
+connection.close()
+
+#Example output
+Students:
+(1, 'Alice', 20, 'Computer Science')
+(2, 'Bob', 22, 'Information Technology')
+(3, 'Charlie', 21, 'Software Engineering')
+
+#QUESTION 2
+#plain the concept of encapsulation in Python.
+ #Create a BankAccount class that uses encapsulation to protect the account balance from direct modification.
+ #Implement methods to deposit and withdraw money,
+ #and provide a method to display the current balance.
+  #Demonstrate how encapsulation is achieved using private attributes.
+
+  #ANSWER
+ # Encapsulation in Python
+#Encapsulation is the concept of bundling data (attributes) and the methods that operate on that data inside a class. It also helps restrict direct access to certain attributes, preventing them from being modified incorrectly from outside the class.
+
+#In Python, an attribute can be made private by prefixing its name with two underscores (__). This is called name mangling, and it makes direct access from outside the class more difficult.
+
+#Example: BankAccount
+#class BankAccount:
+ #   def __init__(self, initial_balance):
+  #      self.__balance = initial_balance  # Private attribute
+
+   # def deposit(self, amount):
+    #    if amount > 0:
+     #       self.__balance += amount
+      #      print(f"${amount} deposited successfully.")
+       # else:
+        #    print("Deposit amount must be positive.")
+
+    #def withdraw(self, amount):
+     #   if amount > 0 and amount <= self.__balance:
+      #      self.__balance -= amount
+       #     print(f"${amount} withdrawn successfully.")
+        #elif amount > self.__balance:
+         #   print("Insufficient funds.")
+        else:
+          #  print("Withdrawal amount must be positive.")
+
+    #def display_balance(self):
+     #   print(f"Current balance: ${self.__balance}")
+
+
+# Create a bank account
+account = BankAccount(1000)
+
+# Access the balance through methods
+account.display_balance()
+
+#account.deposit(500)
+#account.display_balance()
+
+#account.withdraw(300)
+#account.display_balance()
+
+#Output
+#Current balance: $1000
+#$500 deposited successfully.
+#Current balance: $1500
+#$300 withdrawn successfully.
+#Current balance: $1200
+
+#How encapsulation is achieved
+#The important part is:
+
+#self.__balance = initial_balance
+
+#The double underscore makes __balance a private attribute. Therefore, code outside the class should not directly modify it:
+
+#account.__balance = 5000
+
+#This does not modify the original private balance. Instead, Python's name-mangling mechanism treats the internal attribute roughly as:
+
+_BankAccount__balance
+
+#The balance should therefore be changed through controlled methods such as:
+
+#account.deposit(500)
+#account.withdraw(200)
+
+#This provides data protection and controlled access: the class can validate deposits and withdrawals before changing the balance.
+
+
+#QUESTION 3
+# Write a simple client-server program using Python's socket module
+ #The client should connect to the server
+ #and send the message "Hello from client!".
+ #The server should receive the message and print it to the console.
+ #Include basic error handling for network operations.
+
+ #ANSWER
+ #Encapsulation in Python
+#Encapsulation is the concept of bundling data (attributes) and the methods that operate on that data inside a class. It also helps restrict direct access to certain attributes, preventing them from being modified incorrectly from outside the class.
+
+#In Python, an attribute can be made private by prefixing its name with two underscores (__). This is called name mangling, and it makes direct access from outside the class more difficult.
+
+#Example: BankAccount
+#class BankAccount:
+   # def __init__(self, initial_balance):
+        self.__balance = initial_balance  # Private attribute
+
+   # def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            print(f"${amount} deposited successfully.")
+        else:
+            print("Deposit amount must be positive.")
+
+    #def withdraw(self, amount):
+        if amount > 0 and amount <= self.__balance:
+            self.__balance -= amount
+            print(f"${amount} withdrawn successfully.")
+        elif amount > self.__balance:
+            print("Insufficient funds.")
+        else:
+            print("Withdrawal amount must be positive.")
+
+   # def display_balance(self):
+        print(f"Current balance: ${self.__balance}")
+
+
+# Create a bank account
+account = BankAccount(1000)
+
+# Access the balance through methods
+account.display_balance()
+
+#account.deposit(500)
+#account.display_balance()
+
+#account.withdraw(300)
+#account.display_balance()
+
+#Output
+#Current balance: $1000
+#$500 deposited successfully.
+#Current balance: $1500
+#$300 withdrawn successfully.
+#Current balance: $1200
+
+#How encapsulation is achieved
+#The important part is:
+
+#self.__balance = initial_balance
+
+#The double underscore makes __balance a private attribute. Therefore, code outside the class should not directly modify it:
+
+account.__balance = 5000
+
+#This does not modify the original private balance. Instead, Python's name-mangling mechanism treats the internal attribute roughly as:
+
+_BankAccount__balance
+
+#The balance should therefore be changed through controlled methods such as:
+
+account.deposit(500)
+account.withdraw(200)
+
+#This provides data protection and controlled access: the class can validate deposits and withdrawals before changing the balance.
+
+
+#ANSWER
+If you're working with Python sockets, the client can connect to the server and send the required message like this:
+
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the server
+client.connect(("localhost", 12345))
+
+# Send message
+client.sendall(b"Hello from client!")
+
+# Close connection
+client.close()
+
+#Here, localhost is the server's address and 12345 is the port number. The server must be running and listening on the same address and port before the client connects.
+
+#ANSWER
+#Here is a simple Python server that receives the message from the client, prints it to the console, and includes basic error handling:
+
+#import socket
+
+#HOST = "localhost"
+PORT = 12345
+
+#server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+#try:
+    server.bind((HOST, PORT))
+    server.listen(1)
+
+    print(f"Server listening on {HOST}:{PORT}")
+
+    conn, address = server.accept()
+
+    try:
+        message = conn.recv(1024).decode("utf-8")
+        print("Message received:", message)
+    except socket.error as e:
+        print("Error receiving data:", e)
+    finally:
+        conn.close()
+
+#except socket.error as e:
+    print("Network error:", e)
+
+finally:
+    server.close()
+
+#How it works
+bind() assigns the server to localhost and port 12345.
+
+listen() waits for incoming connections.
+
+accept() accepts a connection from the client.
+
+recv() receives the client's message.
+
+decode() converts the received bytes into a string.
+
+try/except handles common socket/network errors.
+
+finally ensures the sockets are closed.
+
+Run the server first, followed by the client from the previous example. The server should print:
+
+Server listening on localhost:12345
+Message received: Hello from client!
+
+QUESTION 4
+#Write a Python program that uses the random module to generate a list of 5 random floating-point numbers between 0 and 10.
+ #Then, calculate and print the minimum and maximum values from the generated list.
+ #Use built-in functions to achieve this.
+
+#ANSWER:
+Here is a simple Python program using the random module and the built-in min() and max() functions:
+
+import random
+
+# Generate a list of 5 random floating-point numbers between 0 and 10
+numbers = [random.uniform(0, 10) for _ in range(5)]
+
+# Calculate minimum and maximum values
+minimum = min(numbers)
+maximum = max(numbers)
+
+# Print the results
+print("Generated numbers:", numbers)
+print("Minimum value:", minimum)
+print("Maximum value:", maximum)
+
+Example output
+Generated numbers: [3.72, 8.15, 1.46, 6.93, 4.28]
+Minimum value: 1.46
+Maximum value: 8.15
+
+random.uniform(0, 10) generates each floating-point number, while min() and max() find the smallest and largest values in the list.
+
+#QUESTION 5
+#5.	Scenario: You are designing a system for handling different types of files.
+ #You want to ensure that all file handler classes implement certain essential methods, such as read() and write().
+#Provide example code demonstrating how to create an ABC FileHandler with abstract methods read() and write(), and how to create concrete classes like TextFileHandler and BinaryFileHandler that inherit from FileHandler.
+
+
+#ANSWER:
+This can be achieved using Python's Abstract Base Classes (ABC). An abstract class defines methods that every concrete subclass must implement.
+
+from abc import ABC, abstractmethod
+
+
+# Abstract base class
+class FileHandler(ABC):
+
+    @abstractmethod
+    def read(self):
+        """Read data from the file."""
+        pass
+
+    @abstractmethod
+    def write(self, data):
+        """Write data to the file."""
+        pass
+
+
+# Concrete class for text files
+class TextFileHandler(FileHandler):
+
+    def read(self):
+        print("Reading text file...")
+
+    def write(self, data):
+        print(f"Writing text data: {data}")
+
+
+# Concrete class for binary files
+class BinaryFileHandler(FileHandler):
+
+    def read(self):
+        print("Reading binary file...")
+
+    def write(self, data):
+        print(f"Writing binary data: {data}")
+
+
+# Create objects
+text_handler = TextFileHandler()
+binary_handler = BinaryFileHandler()
+
+# Use the methods
+text_handler.read()
+text_handler.write("Hello, World!")
+
+binary_handler.read()
+binary_handler.write(b"101010")
+
+Example output
+Reading text file...
+Writing text data: Hello, World!
+Reading binary file...
+Writing binary data: b'101010'
+
+Explanation
+FileHandler inherits from ABC, making it an abstract base class.
+
+@abstractmethod declares read() and write() as methods that subclasses must implement.
+
+TextFileHandler and BinaryFileHandler provide their own implementations of these methods.
+
+You cannot create a FileHandler object directly:
+
+handler = FileHandler()  # TypeError
+
+This approach ensures that every concrete file handler follows the same interface while allowing each handler to implement the operations differently.
+
+
+#QUESTION 6
+#Create a simple class hierarchy involving a Vehicle class as the base class and two subclasses Car and Bike.
+ #Show how you would implement a method in the base class and override it in the subclasses.
+
+#ANSWER
+Vehicle Class Hierarchy
+Inheritance allows Car and Bike to reuse a method from the Vehicle base class while also overriding that method to provide their own behavior.
+
+# Base class
+class Vehicle:
+
+    def start(self):
+        print("The vehicle is starting.")
+
+
+# Subclass
+class Car(Vehicle):
+
+    # Override the start() method
+    def start(self):
+        print("The car starts with a key.")
+
+
+# Subclass
+class Bike(Vehicle):
+
+    # Override the start() method
+    def start(self):
+        print("The bike starts with a kick.")
+
+
+# Create objects
+vehicle = Vehicle()
+car = Car()
+bike = Bike()
+
+# Call the methods
+vehicle.start()
+car.start()
+bike.start()
+
+#Output
+The vehicle is starting.
+The car starts with a key.
+The bike starts with a kick.
+
+#Explanation
+Vehicle is the base class.
+
+#Car and Bike are subclasses that inherit from Vehicle.
+
+#The start() method is defined in Vehicle.
+
+#Both Car and Bike override start() with their own implementations.
+
+#When car.start() is called, Python uses the Car version. Similarly, bike.start() uses the Bike version.
+
+#This demonstrates inheritance and method overriding, which are important concepts in object-oriented programming.
+
+
+
+
+
+
+
+
+
