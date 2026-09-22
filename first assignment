@@ -1,0 +1,140 @@
+from pip._internal.utils import filesystem
+
+python programming assignment
+#question 1
+#Write a Python program that asks the user to enter their age.
+#Use a try block to handle any ValueError exceptions that occur if the user enters invalid input. Continue prompting the user until a valid integer is entered, then display the age.                                           [5 marks]
+
+#ANSWER
+#while True:
+    try:
+        age = int(input("Enter your age: "))
+        break
+    except ValueError:
+        print("Invalid input. Please enter a valid integer.")
+
+print("Your age is:", age)
+
+
+
+#QUESTION 2
+ #Create a Python program that stores a list of five favourite fruits.
+  #in a file named fruits.txt, with each fruit written on a separate line.
+  #Then open the file, read its contents, and display each fruit on the screen.
+   #Use the with statement for all file operations to ensure the file is closed automatically. [5 marks]
+
+   #ANSWER
+# Store five favourite fruits in fruits.txt
+fruits = ["Apple", "Banana", "Mango", "Orange", "Grapes"]
+
+with open("fruits.txt", "w") as file:
+    for fruit in fruits:
+        file.write(fruit + "\n")
+
+# Read and display the fruits
+with open("fruits.txt", "r") as file:
+    for fruit in file:
+        print(fruit.strip())
+
+# QUESTION 3. I
+#Create a dictionary containing the names of five students and their marks.
+#Write a program to:
+#Display all students and their marks.
+#Find the student with the highest mark.
+
+#ANSWER
+# Create a dictionary containing five students and their marks
+students = {
+    "John": 75,
+    "Mary": 88,
+    "Peter": 69,
+    "Sarah": 92,
+    "David": 81
+}
+
+# Display all students and their marks
+print("Students and their marks:")
+for name, mark in students.items():
+    print(name, ":", mark)
+
+# Find the student with the highest mark
+highest_student = max(students, key=students.get)
+highest_mark = students[highest_student]
+
+#print("\nStudent with the highest mark:")
+#print(highest_student, ":", highest_mark)
+
+QUESTION 3. ii
+#Create a class called Book with a constructor (__init__) that initializes:
+ #Title
+ #Author
+ #Price
+ #Write a method that displays the book details.Instantiate two book objects.
+                                                                                                                             [10 marks]
+#ANSWER
+# Create a class called Book
+class Book:
+    def __init__(self, title, author, price):
+        self.title = title
+        self.author = author
+        self.price = price
+
+    # Method to display book details
+    def display_details(self):
+        print("Title:", self.title)
+        print("Author:", self.author)
+        print("Price:", self.price)
+        print()
+
+
+# Instantiate two Book objects
+book1 = Book("Things Fall Apart", "Chinua Achebe", 15.00)
+book2 = Book("The Alchemist", "Paulo Coelho", 12.50)
+
+# Display the details of both books
+book1.display_details()
+book2.displaasy_details()
+
+#QUESTION 4
+#A log-processing service receives continuous streams of timestamps representing user logins.
+#Write a Python function find_peak_usage(logs) that determines the hour of the day (0–23) that experienced the highest volume of logins.
+#Requirements:
+#Input logs is a list of ISO-formatted timestamp strings (e.g., "2026-08-04T13:21:18").
+#Return an integer representing the peak hour (0–23). If there is a tie, return the earliest hour.
+#Do not use external libraries like pandas (built-in modules such as datetime or collections are allowed).
+
+#ANSWER
+from datetime import datetime
+
+def find_peak_usage(logs):
+    # Create a list to store the number of logins for each hour
+    hourly_count = [0] * 24
+
+    # Process each timestamp
+    for timestamp in logs:
+        time = datetime.fromisoformat(timestamp)
+        hourly_count[time.hour] += 1
+
+    # Find the hour with the highest number of logins
+    peak_hour = hourly_count.index(max(hourly_count))
+
+    return peak_hour
+
+
+# Example usage
+logs = [
+    "2026-08-04T13:21:18",
+    "2026-08-04T13:45:10",
+    "2026-08-04T09:15:20",
+    "2026-08-04T13:55:30",
+    "2026-08-04T09:30:45",
+    "2026-08-04T18:10:12"
+]
+
+print("Peak usage hour:", find_peak_usage(logs))
+
+Output:
+
+Peak usage hour: 13
+
+hourly_count.index(max(hourly_count)) returns the first occurrence of the maximum value, so if two or more hours have the same highest number of logins, the earliest hour is returned.
